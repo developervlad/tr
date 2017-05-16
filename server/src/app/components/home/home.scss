@@ -1,0 +1,16 @@
+html, body, #react-root, .container {
+	height: 100%;
+}
+
+
+.home {
+
+	background-image: url('/static/img/home.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 0 120px;
+
+  h1 {
+    color: $light-blue;
+  }
+}
