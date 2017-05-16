@@ -54,10 +54,55 @@ io.on('connection', function(socket){
                     if (err) return handleError(err);
                     console.log(person);
                     socket.emit('action', {type:'AUTH', role: person.role});
-            })
-            
-            
+            }) 
         }
+
+        if(action.type === 'server/GET_COURSES'){
+            
+            db.courses().find({}, function (err, data) {
+                    if (err) return handleError(err);
+                    socket.emit('action', {type:'RECEIVE_COURSES', courses: data});
+            }) 
+        }
+
+        if(action.type === 'server/GET_LECTORS'){
+            
+            db.lectors().find({}, function (err, data) {
+                    if (err) return handleError(err);
+                    socket.emit('action', {type:'RECEIVE_LECTORS', lectors: data});
+            }) 
+        }
+
+        if(action.type === 'server/ADD_LECTOR'){
+            
+            var y = new db.lectors(mongoose)({ids: action.id, name: action.name, faculty: action.faculty, cafedra: action.cafedra});
+
+            y.save(function (err) {
+  if (err) {
+        return err;
+  }
+  else {
+    console.log("Post saved");
+  }
+});
+
+        }
+
+         if(action.type === 'server/ADD_COURSE'){
+            
+            var t = new db.courses(mongoose)({ids: action.id, name: action.name, description: action.description});
+
+            t.save(function (err) {
+  if (err) {
+        return err;
+  }
+  else {
+    console.log("Post saved");
+  }
+});
+
+        }
+
     });
 
 });

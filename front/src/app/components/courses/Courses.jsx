@@ -1,29 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+
+/* Material UI*/
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 
 class Courses extends React.Component {
 
   constructor(props) {
     super(props);
-  }
-  
-  componentDidMount() {
-    console.log('PROPS', this.props.route.store.getState());
-  }
 
-    
+     this.state = {
+      open: false,
+    };
 
-render() {
-  return (
-    <div className="container courses">
-      <h1>Курси</h1>
-      <div>
 
+/*
  <div style={{width: '300px', float: 'left', marginRight: '30px'}}><Card>
     <CardHeader
       title="Михайло Згуровський"
@@ -73,12 +71,101 @@ render() {
       <RaisedButton label="Розпочати" primary={true} />
     </CardActions>
   </Card>
-</div>
+</div> */
+
+  }
+  
+  componentDidMount() {
+    this.props.route.actions.getCourses();
+  }
+
+    handleOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  login = () => {
+    
+    this.props.route.actions.addCourse(this.refs.id.getValue(), this.refs.name.getValue(), this.refs.description.getValue());
+    this.handleClose();
+    this.props.route.actions.getCourses();
+  }
+
+render() {
+  return (
+    <div className="container courses">
+{this.props.route.store.getState().auth == 'lector' &&
+<RaisedButton style={{float: 'right'}} label="Додати лекцію" onClick={this.handleOpen} />
+}
+
+      <h1>Курси</h1>
+      <div>
+
+
+
+    {this.props.route.store.getState().courses &&
+      this.props.route.store.getState().courses.map((item)=>{
+        return <div style={{width: '300px', float: 'left', marginRight: '30px'}}><Card>
+    <CardMedia
+      overlay={<CardTitle title={item.name} />}
+    >
+      <img src="static/img/course1.jpg" />
+    </CardMedia>
+    <CardText>
+     {item.description}
+    </CardText>
+    <CardActions>
+      <Link to="/video"><RaisedButton label="Розпочати" primary={true} /></Link>
+    </CardActions>
+  </Card>
+</div>;
+      })
+    }
 
       </div>
+
+
+<Dialog
+          title="Створення лекції"
+          actions={<div>
+      <FlatButton
+        label="Назад"
+        primary={true}
+        onClick={this.handleClose}
+      />
+      <RaisedButton
+        label="Створити"
+        primary={true}
+        onClick={this.login}
+      /></div>}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+        <TextField
+      hintText="Назва"
+      floatingLabelText="Назва"
+      ref="name"
+    /><br />
+        <TextField
+      hintText="Опис"
+      floatingLabelText="Опис"
+      ref="description"
+    /><br />
+  
+     <TextField
+      hintText="id"
+      floatingLabelText="id"
+      ref="id"
+    /><br />
+        </Dialog>
+
     </div>
   )
 }
 }
 
-export default Courses;
+export default connect((state)=>{return state})(Courses);

@@ -13,7 +13,9 @@ function App(props) {
   return (
     <MuiThemeProvider><div className="container">
       <Header store={props.route.store} actions={props.route.actions}/>
-      {props.children}
+      {props.route.store.getState().auth &&
+      <div>{props.children}</div>
+  }
     </div>
     </MuiThemeProvider>
   );

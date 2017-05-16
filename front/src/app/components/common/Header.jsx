@@ -56,6 +56,7 @@ render() {
         <ul>
         <img src='http://kpi.ua/themes/kpi/images/logo.png' style={{display: 'block', margin: '10px auto'}}/>
 
+  <span style={{visibility: this.props.store.getState().auth ? 'visible' : 'hidden'}}>
           <li>
             <Link to="/">Головна</Link>
           </li>
@@ -71,9 +72,13 @@ render() {
           <li>
             <Link to="/">Матеріали</Link>
           </li>
+</span>
 
           {!this.props.store.getState().auth && 
           <RaisedButton style={{float: 'right'}} label="Увійти" onClick={this.handleOpen} />
+        }
+         {this.props.store.getState().auth && 
+          <div style={{float: 'right'}}>Вітаємо, {this.props.store.getState().auth}</div>
         }
         </ul>
       </nav>

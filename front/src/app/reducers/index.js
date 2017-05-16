@@ -5,7 +5,11 @@ function reducer(state = {}, action){
         case 'message':
             return Object.assign({}, {message: action.data});
         case 'AUTH': 
-            return Object.assign({}, {auth: action.role});
+            return Object.assign({}, state, {auth: action.role});
+        case 'RECEIVE_COURSES': 
+            return Object.assign({}, state, {courses: action.courses});
+        case 'RECEIVE_LECTORS': 
+            return Object.assign({}, state, {lectors: action.lectors});
         default:
             return state;
     }

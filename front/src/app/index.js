@@ -40,7 +40,8 @@ ReactDOM.render(
         <IndexRoute component={Home} />;
         <Route path="/about" component={About} />
         <Route path="/courses" component={Courses} store={store} actions={actions} />
-        <Route path="/lecturers" component={Lecturers} />
+        <Route path="/lecturers" component={Lecturers} store={store} actions={actions} />
+      
         <Route path="/video" component={Video} />
       </Route>
     </Router>
